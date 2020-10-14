@@ -4,7 +4,7 @@
 #include "Player.h"
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1080, 720), "Fuuma-Prototype",sf::Style::Close | sf::Style::Resize);
+	sf::RenderWindow window(sf::VideoMode(1080, 720), "Fuuma-Prototype", sf::Style::Close | sf::Style::Resize);
 	sf::Texture playerTextures;
 	playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja.png");
 	/*if (!playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja.png"))
@@ -13,10 +13,10 @@ int main()
 	} */
 
 
-	Player player(&playerTextures, sf::Vector2u(4, 10), 0.2f,100.0f);
+	Player player(&playerTextures, sf::Vector2u(4, 10), 0.2f, 100.0f);
 	float deltaTime = 0.0f;
-	sf::Clock clock; 
-	
+	sf::Clock clock;
+
 	while (window.isOpen())
 	{
 		deltaTime = clock.restart().asSeconds();
