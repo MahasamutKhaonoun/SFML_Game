@@ -8,7 +8,7 @@ public:
 	Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
 	~Player();
 
-	void Update(float deltaTime);
+	void Update(float deltaTime,int framplayer,int dirplayer);
 	void Draw(sf::RenderWindow& window);
 private:
 	sf::RectangleShape body;
@@ -16,4 +16,5 @@ private:
 	unsigned int row;
 	float speed;
 	bool faceRight;
+
 };
