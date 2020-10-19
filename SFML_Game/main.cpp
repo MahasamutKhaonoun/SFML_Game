@@ -1,28 +1,41 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Animation.h"
 #include "Player.h"
-void draw_stage();
+#include "Platform.h"
+
+/*static const float VIEW_HEIGHT = 512.0f;
+
+void ResizeView(const sf::RenderWindow& window, sf::View& view)
+{
+	float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
+	view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
+} */
+
 int main()
 {
 	int framplayer=0,dirplayer=1;
 	sf::RenderWindow window(sf::VideoMode(1080, 720), "Fuuma-Prototype", sf::Style::Close | sf::Style::Resize);
+	//sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 	sf::Texture playerTextures;
 	//sf::Texture stage01texture;
 	//sf::RectangleShape stage01(sf::Vector2f(3900.0f, 720.0f));
-	playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja.png");
+	//playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja.png");
 	//stage01texture.loadFromFile("Stage/NinjaGaidenMapStage1-1BG.png");
 	//stage01.setTexture(&stage01texture);
 
-	/*if (!playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja.png"))
+	if (!playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja.png"))
 	{
 		std::cout << "Load failed" << std::endl;
-	} */
+	} 
 
 
-	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 250.0f);
+	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 250.0f); 
+
+	Platform platform1(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(480.0f, 525.0f));
+	Platform platform2(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f));
+
+
 	float deltaTime = 0.0f;
-
 	sf::Clock clock;
 
 	while (window.isOpen())
@@ -46,31 +59,19 @@ int main()
 				}
 			}
 		}
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-		{
-			player.move(-0.1f, 0.0f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-		{
-			player.move(0.1f, 0.0f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-		{
-			//player.move(0.0f, -0.1f);
-			player.setTextureRect(sf::IntRect(textureSize.x * 0, textureSize.y * 0, textureSize.x, textureSize.y));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-		{
-			//player.move(0.0f, 0.1f);
-			player.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 0, textureSize.x, textureSize.y));
-		}*/
-		//animation.Update(0, deltaTime, false);
-		//player.setTextureRect(animation.uvRect);
 
-		player.Update(deltaTime, framplayer, dirplayer);
+		player.Update(deltaTime);
+
+		platform1.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
+		platform2.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
+
+		//view.setCenter(player.GetPosition());
 		window.clear(sf::Color::Red);
+		//window.setView(view);
 		//window.draw(stage01);
 		player.Draw(window);
+		platform1.Draw(window);
+		platform2.Draw(window);
 		window.display();
 	}
 

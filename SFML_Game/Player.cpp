@@ -6,7 +6,8 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	this->speed = speed;
 	row = 0;
 	faceRight = true;
-	body.setSize(sf::Vector2f(235.0f, 235.0f)); //235
+	body.setSize(sf::Vector2f(140.0f, 170.0f)); //235
+	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f });
 	body.setPosition(490.0f, 440.0f);// 360
 	body.setTexture(texture);
 
@@ -17,7 +18,7 @@ Player::~Player()
 
 }
 
-void Player::Update(float deltaTime,int framplayer,int dirplayer)
+void Player::Update(float deltaTime)
 {
 	sf::Vector2f movement(0.0f, 0.0f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
@@ -37,7 +38,14 @@ void Player::Update(float deltaTime,int framplayer,int dirplayer)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
 		row = 4;
-		movement.x += deltaTime;
+		movement.y = speed * deltaTime;
+		//movement.x += deltaTime;
+		//framplayer = 2;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+	{
+		movement.y -= speed * deltaTime;
+		//movement.x += deltaTime;
 		//framplayer = 2;
 	}
 	/*else
