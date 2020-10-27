@@ -11,7 +11,7 @@ public:
 
 	void Update(float deltaTime);
 	void Draw(sf::RenderWindow& window);
-	void OnCollision(sf::Vector2f direction);
+	void OnCollision(sf::Vector2f direction, float deltaTime);
 
 	Collider GetCollider() { return Collider(body); }
 	sf::Vector2f GetPosition() { return body.getPosition(); }
@@ -24,8 +24,10 @@ private:
 	bool faceRight;
 
 	sf::Vector2f velocity;
+	sf::Vector2f velocity_jump;
 	bool canJump;
 	float jumpHeight;
 
 	bool inAction;//action check
+	bool inclimb;
 };

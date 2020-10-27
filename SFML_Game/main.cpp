@@ -34,6 +34,8 @@ int main()
 	std::vector<Platform> platforms;
 	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(480.0f, 525.0f)));
 	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
+	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
 
 	//Platform platform1(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(480.0f, 525.0f));
 	//Platform platform2(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f));
@@ -70,10 +72,11 @@ int main()
 
 		for (Platform& platform : platforms)
 			if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f))
-				player.OnCollision(direction);
+				player.OnCollision(direction,deltaTime);
 
 		//platform1.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
 		//platform2.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
+
 
 		view.setCenter(player.GetPosition());
 		window.clear(sf::Color::Red);
@@ -82,9 +85,9 @@ int main()
 		player.Draw(window);
 
 		for (Platform& platform : platforms)
-			platform.Draw(window);
-			//platform1.Draw(window);
-			//platform2.Draw(window);
+		platform.Draw(window);
+		//platform1.Draw(window);
+		//platform2.Draw(window);
 		window.display();
 	}
 
