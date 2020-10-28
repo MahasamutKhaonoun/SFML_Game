@@ -3,11 +3,11 @@
 #include "Animation.h"
 #include "Collider.h"
 
-class Player
+class Enemy_01
 {
 public:
-	Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeight);
-	~Player();
+	Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeight);
+	~Enemy_01();
 
 	void Update(float deltaTime);
 	void Draw(sf::RenderWindow& window);
@@ -32,3 +32,4 @@ private:
 	bool inAction;//action check
 	bool inclimb;
 };
+

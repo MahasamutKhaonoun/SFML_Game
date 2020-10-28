@@ -27,6 +27,7 @@ void Player::Update(float deltaTime)
 {
 	velocity.x *= 0.0f;
 	velocity_jump.x *= 0.0f;
+	velocity_attack *= 0.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
@@ -34,7 +35,7 @@ void Player::Update(float deltaTime)
 		velocity.x -= speed;
 		if (inclimb == true)
 		{
-			row = 4;
+			row = 5;
 			velocity.x += deltaTime;
 			inclimb = false;
 		}
@@ -47,13 +48,13 @@ void Player::Update(float deltaTime)
 		velocity.x += speed;
 		if (inclimb == true)
 		{
-			row = 4;
+			row = 5;
 			velocity.x += deltaTime;
 			inclimb = false;
 		}
 		this->inAction = false;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && this->inAction == false)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && this->inAction == false) // on ground
 	{
 		row = 8;
 		velocity.x = deltaTime;
@@ -70,12 +71,12 @@ void Player::Update(float deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K) && canJump == true && inclimb == false) 
 	{
 		canJump = false;
-		velocity.y = -sqrt(2.0f * 981.0f * jumpHeight);
+		velocity.y = -sqrt(2.0f * 981.0f * jumpHeight); // ลอย
 		//square root (2.0f * gravity * jumpHeight);
 
 	}
 
-	velocity.y += 981.0f * deltaTime;
+	velocity.y += 981.0f * deltaTime; //ตก
 
 	if (velocity.x == 0.0f && this->inAction == false)
 	{
@@ -89,11 +90,18 @@ void Player::Update(float deltaTime)
 			faceRight = false;
 	}
 
-	if (canJump == false)
+	if (canJump == false) // ระหว่างลอยอยู่กลางอากาศ
 	{
 		row = 2;
 		velocity_jump.x = deltaTime;
-		this->inAction = false;
+		//this->inAction = false;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
+		{
+			row = 6;
+			velocity_attack.x = deltaTime;
+			this->inAction = true;
+		}
+
 	}
 
 
