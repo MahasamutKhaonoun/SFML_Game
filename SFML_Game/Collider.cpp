@@ -8,7 +8,7 @@ Collider::~Collider()
 {
 
 }
-bool Collider::CheckCollision(Collider other, sf::Vector2f& direction, float push)
+bool Collider::CheckCollision(Collider other, sf::Vector2f& direction, float push, int hitbox_value)
 {
 	sf::Vector2f otherPosition = other.GetPosition();
 	sf::Vector2f otherHalfSize = other.GetHalfSize();
@@ -17,8 +17,8 @@ bool Collider::CheckCollision(Collider other, sf::Vector2f& direction, float pus
 
 	float deltaX = otherPosition.x - thisPosition.x ; // reduce scale sprite X-axis เอาไว้ปรับเพื่อลดhitbox ของ การเช็ค
 	float deltaY = otherPosition.y - thisPosition.y;
-	float intersectX = abs(deltaX) - (otherHalfSize.x + thisHalfSize.x) +30 ;
-	float intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y) ;
+	float intersectX = abs(deltaX) - (otherHalfSize.x + thisHalfSize.x) + hitbox_value;
+	float intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y)  ;
 
 
 	if (intersectX < 0.0f && intersectY < 0.0f)

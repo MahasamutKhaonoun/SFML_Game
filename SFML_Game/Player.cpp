@@ -13,7 +13,7 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	body.setSize(sf::Vector2f(140.0f, 170.0f)); //235
 	//body.setScale(1.f, 1.6f);
 	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f });
-	body.setPosition(490.0f, 440.0f);// 360
+	body.setPosition(380.0f, 440.0f);// 360
 	body.setTexture(texture);
 
 }
@@ -54,7 +54,7 @@ void Player::Update(float deltaTime)
 		}
 		this->inAction = false;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && this->inAction == false) // on ground
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && this->inAction == false && this->inclimb == false) // on ground
 	{
 		row = 8;
 		velocity.x = deltaTime;

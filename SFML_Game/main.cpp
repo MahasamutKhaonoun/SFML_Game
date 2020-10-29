@@ -16,6 +16,8 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 
 int main()
 {
+	int hitbox_E01 = 70;
+	int hitbox_platforms = 35;
 	int framplayer=0,dirplayer=1;
 	sf::RenderWindow window(sf::VideoMode(1080, 720), "Fuuma-Prototype", sf::Style::Close | sf::Style::Resize); // | sf::Style::Resize
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
@@ -93,14 +95,15 @@ int main()
 
 		sf::Vector2f direction;
 		for (Platform& platform : platforms)
-			if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f))
+			if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_platforms))
 				player.OnCollision(direction,deltaTime);
-		for (Platform& platform2 : platforms)
-			if (platform2.GetCollider().CheckCollision(enemy_01.GetCollider(), direction, 1.0f))
-				enemy_01.OnCollision(direction, deltaTime);
 
-		if (enemy_01.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f))
-			player.OnCollision(direction, deltaTime);
+		for (Platform& platform2 : platforms)
+			if (platform2.GetCollider().CheckCollision(enemy_01.GetCollider(), direction, 1.0f, hitbox_E01))
+				enemy_01.OnCollision(direction, deltaTime);
+			if (enemy_01.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_E01))
+				player.OnCollision(direction, deltaTime);
+		
 
 		//platform1.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
 		//platform2.GetCollider().CheckCollision(player.GetCollider(), 1.0f);

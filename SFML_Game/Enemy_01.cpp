@@ -13,7 +13,7 @@ Enemy_01::Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTi
 	body.setSize(sf::Vector2f(140.0f, 170.0f)); //235
 	//body.setScale(1.f, 1.6f);
 	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f });
-	body.setPosition(600.0f, 450.0f);// 360
+	body.setPosition(550.0f, 450.0f);// 360
 	body.setTexture(texture);
 }
 Enemy_01::~Enemy_01()
