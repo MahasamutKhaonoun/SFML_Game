@@ -6,7 +6,7 @@
 #include "Enemy_01.h"
 void textureStage();
 
-static const float VIEW_HEIGHT = 720.0f;
+static const float VIEW_HEIGHT = 1080.0f;
 
 void ResizeView(const sf::RenderWindow& window, sf::View& view)
 {
@@ -19,7 +19,7 @@ int main()
 	int hitbox_E01 = 70;
 	int hitbox_platforms = 35;
 	int framplayer=0,dirplayer=1;
-	sf::RenderWindow window(sf::VideoMode(1080, 720), "Fuuma-Prototype", sf::Style::Close | sf::Style::Resize); // | sf::Style::Resize
+	sf::RenderWindow window(sf::VideoMode(1360, 720), "Fuuma-Prototype"); // | sf::Style::Resize
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 
 	//------------------------------------------------------Texture------------------------------------------------------//
@@ -32,7 +32,7 @@ int main()
 	playerT.setTexture(&playerTextures);
 
 	sf::Texture testob;
-	testob.loadFromFile("Stage/AutumnHills_8_BackAsset01.png");
+	testob.loadFromFile("Stage/AutumnHillsTileset_9.png");
 	sf::RectangleShape test(sf::Vector2f(200.0f, 200.0f));
 	test.setTexture(&testob);
 	//test.setOrigin(sf::Vector2f(100.f, 100.f));
@@ -46,7 +46,6 @@ int main()
 	
 
 
-
 	
 	//------------------------------------------------------Texture------------------------------------------------------//
 	//sf::Vector2f spawnPoint = { 0.f, 0.f };
@@ -55,12 +54,14 @@ int main()
 	Enemy_01 enemy_01(&playerTextures, sf::Vector2u(4, 10), 0.1f, 250.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
 	//------------------------------------------------------Platforms------------------------------------------------------//
 
-
+	//Test System Room
 	std::vector<Platform> platforms;
-	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(480.0f, 525.0f))); //texture,size,position
-	platforms.push_back(Platform(nullptr, sf::Vector2f(10000.0f, 200.0f), sf::Vector2f(5680.0f, 500.0f))); 
-	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
+		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 625.0f))); //texture,size,position
+		platforms.push_back(Platform(nullptr, sf::Vector2f(10000.0f, 200.0f), sf::Vector2f(5680.0f, 500.0f)));
+		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
+		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
+
+	//Stage 1.1
 
 	//------------------------------------------------------Platforms------------------------------------------------------//
 
@@ -71,6 +72,9 @@ int main()
 	while (window.isOpen())
 	{
 		deltaTime = clock.restart().asSeconds();
+		if (deltaTime > 1.0f / 30.0f)
+			deltaTime = 1.0f / 30.0f;
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -86,6 +90,7 @@ int main()
 				if (event.text.unicode < 128)
 				{
 					//printf("%c", event.text.unicode);
+				
 				}
 			}
 		}
@@ -93,16 +98,38 @@ int main()
 		player.Update(deltaTime);
 		enemy_01.Update(deltaTime);
 
+
+
+
+
+
+
 		sf::Vector2f direction;
 		for (Platform& platform : platforms)
-			if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_platforms))
+			if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 2.0f, hitbox_platforms))
 				player.OnCollision(direction,deltaTime);
 
-		for (Platform& platform2 : platforms)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		/*for (Platform& platform2 : platforms)
 			if (platform2.GetCollider().CheckCollision(enemy_01.GetCollider(), direction, 1.0f, hitbox_E01))
 				enemy_01.OnCollision(direction, deltaTime);
 			if (enemy_01.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_E01))
-				player.OnCollision(direction, deltaTime);
+				player.OnCollision(direction, deltaTime);*/
 		
 
 		//platform1.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
@@ -115,7 +142,7 @@ int main()
 		//window.draw(stage01);
 		window.draw(test);
 		player.Draw(window); /////////////////////// Draw ใครอยุ่ล่างสุด จะได้อยู่หน้าสุด
-		enemy_01.Draw(window);
+		//enemy_01.Draw(window);
 
 		for (Platform& platform : platforms)
 		platform.Draw(window);

@@ -8,12 +8,13 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	this->inAction = false;
 	this->canJump = false;
 	this->inclimb = false;
+	this->TouchingGround = false;
 	row = 0;
 	faceRight = true;
-	body.setSize(sf::Vector2f(140.0f, 170.0f)); //235
+	body.setSize(sf::Vector2f(120.0f, 170.0f)); //235
 	//body.setScale(1.f, 1.6f);
-	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f });
-	body.setPosition(380.0f, 440.0f);// 360
+	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f});
+	body.setPosition(380.0f, 440.0f);// For Test System Room
 	body.setTexture(texture);
 
 }
@@ -39,7 +40,7 @@ void Player::Update(float deltaTime)
 			velocity.x += deltaTime;
 			inclimb = false;
 		}
-
+	
 		this->inAction = false;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
@@ -54,7 +55,7 @@ void Player::Update(float deltaTime)
 		}
 		this->inAction = false;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && this->inAction == false && this->inclimb == false) // on ground
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && this->inAction == false ) // on ground
 	{
 		row = 8;
 		velocity.x = deltaTime;
@@ -68,7 +69,7 @@ void Player::Update(float deltaTime)
 		//framplayer = 2;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K) && canJump == true && inclimb == false) 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K) && canJump == true) 
 	{
 		canJump = false;
 		velocity.y = -sqrt(2.0f * 981.0f * jumpHeight); // ÅÍÂ
@@ -76,7 +77,9 @@ void Player::Update(float deltaTime)
 
 	}
 
-	velocity.y += 981.0f * deltaTime; //µ¡
+
+		velocity.y += 981.0f * deltaTime; //µ¡
+
 
 	if (velocity.x == 0.0f && this->inAction == false)
 	{
@@ -105,6 +108,7 @@ void Player::Update(float deltaTime)
 	}
 
 
+
 	if (animation.Update(row, deltaTime, faceRight))
 	{
 		this->inAction = false;
@@ -124,18 +128,17 @@ void Player::OnCollision(sf::Vector2f direction,float deltaTime)
 {
 	if (direction.x < 0.0f)
 	{
-		//Collision on the left
+		//Collision on the right
 		velocity.x = 0.0f;
-		this->canJump = true;
-		this->inclimb = true;
-	
+		inclimb = true;
+		canJump = true;
 	}
 	else if (direction.x > 0.0f)
 	{
-		//Collision on the right
+		//Collision on the left
 		velocity.x = 0.0f;
-		this->canJump = true;
-		this->inclimb = true;
+		inclimb = true;
+		canJump = true;
 	}
 	if (direction.y < 0.0f)
 	{
@@ -147,10 +150,10 @@ void Player::OnCollision(sf::Vector2f direction,float deltaTime)
 	{
 		//Collision on the top
 		velocity.x = 0.0f;
-	}
 
+	}
 	if (inclimb == true)
 	{
-		velocity.y = 0;
+		velocity.y = 0.0f;
 	}
 }

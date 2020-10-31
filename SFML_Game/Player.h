@@ -28,7 +28,8 @@ private:
 	sf::Vector2f velocity_attack;
 	bool canJump;
 	float jumpHeight;
-
-	bool inAction;//action check
 	bool inclimb;
+	bool inAction;//action check
+	bool TouchingGround;
+	//bool inclimb;
 };
