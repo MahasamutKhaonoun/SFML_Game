@@ -39,14 +39,13 @@ int main()
 	test.setPosition(0, 0);
 
 	sf::Texture stage01texture;
-	stage01texture.loadFromFile("Stage/NinjaGaidenMapStage1-1BG.png");
-	sf::RectangleShape stage01(sf::Vector2f(3900.0f, 720.0f));
+	stage01texture.loadFromFile("Stage/AutumnHills_Parallax05_01_16.png");
+	sf::RectangleShape stage01(sf::Vector2f(1360.0f, 1080.0f));
 	stage01.setTexture(&stage01texture);
+	stage01.setOrigin(1360.0f / 2.0f, 1080.0f / 2.0f);
 	//test.setTextureRect(sf::IntRect(490, 440, 490, 440));
 	
 
-
-	
 	//------------------------------------------------------Texture------------------------------------------------------//
 	//sf::Vector2f spawnPoint = { 0.f, 0.f };
 
@@ -56,13 +55,13 @@ int main()
 
 	//Test System Room
 	std::vector<Platform> platforms;
-		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 625.0f))); //texture,size,position
-		platforms.push_back(Platform(nullptr, sf::Vector2f(10000.0f, 200.0f), sf::Vector2f(5680.0f, 500.0f)));
+		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 1000.0f))); //texture,size,position
+		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f)));
 		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
 		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
 
 	//Stage 1.1
-
+		//platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 625.0f)));
 	//------------------------------------------------------Platforms------------------------------------------------------//
 
 
@@ -135,11 +134,11 @@ int main()
 		//platform1.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
 		//platform2.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
 
-
+		stage01.setPosition(player.GetPosition());
 		view.setCenter(player.GetPosition());
 		window.clear(sf::Color::Red);
 		window.setView(view);
-		//window.draw(stage01);
+		window.draw(stage01);
 		window.draw(test);
 		player.Draw(window); /////////////////////// Draw ใครอยุ่ล่างสุด จะได้อยู่หน้าสุด
 		//enemy_01.Draw(window);
