@@ -44,24 +44,66 @@ int main()
 	stage01.setTexture(&stage01texture);
 	stage01.setOrigin(1360.0f / 2.0f, 1080.0f / 2.0f);
 	//test.setTextureRect(sf::IntRect(490, 440, 490, 440));
+
+	sf::Texture stage01textureF;
+	stage01textureF.loadFromFile("Stage/AutumnHills_RoomBackground01B_8.png");
+	sf::RectangleShape stage01F(sf::Vector2f(1360.0f, 1080.0f));
+	stage01F.setTexture(&stage01textureF);
+	stage01F.setOrigin(1360.0f / 2.0f, 1080.0f / 2.0f);
+
+	sf::Texture UI_Frametexture;
+	UI_Frametexture.loadFromFile("Stage/Items and Icons.png");
+	sf::RectangleShape UIFrame(sf::Vector2f(300.0f, 200.0f));
+	UIFrame.setTexture(&UI_Frametexture);
+	UIFrame.setOrigin(-200 , 530);
+	//UIFrame.setRotation(180.f);
+
+
 	
 
 	//------------------------------------------------------Texture------------------------------------------------------//
 	//sf::Vector2f spawnPoint = { 0.f, 0.f };
 
-	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 250.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
+	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 800.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
 	Enemy_01 enemy_01(&playerTextures, sf::Vector2u(4, 10), 0.1f, 250.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
+
 	//------------------------------------------------------Platforms------------------------------------------------------//
 
 	//Test System Room
 	std::vector<Platform> platforms;
-		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 1000.0f))); //texture,size,position
-		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f)));
-		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
-		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 1500.0f))); //texture,size,position
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f)));
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
 
 	//Stage 1.1
-		//platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 625.0f)));
+		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 1000.0f), sf::Vector2f(480.0f, 2000.0f))); //p1
+		platforms.push_back(Platform(nullptr, sf::Vector2f(600.0f, 1000.0f), sf::Vector2f(980.0f, 2200.0f))); //p2
+		platforms.push_back(Platform(nullptr, sf::Vector2f(2000.0f, 1000.0f), sf::Vector2f(2280.0f, 2300.0f))); //p3
+
+		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(1950.0f, 1550.0f))); //p4
+		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(1580.0f, 1200.0f))); //p5
+
+		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(2200.0f, 1200.0f))); //Item
+		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(2500.0f, 1200.0f))); //Item
+
+		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(2800.0f, 1550.0f))); //p6
+
+		platforms.push_back(Platform(nullptr, sf::Vector2f(2500.0f, 1000.0f), sf::Vector2f(4800.0f, 2300.0f))); //p13
+		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(4000.0f, 1500.0f))); //Item
+		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(4200.0f, 1550.0f))); //p7
+		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 700.0f), sf::Vector2f(4400.0f, 1450.0f))); //p8
+
+		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 100.0f), sf::Vector2f(4800.0f, 1000.0f))); //p9
+		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(5100.0f, 800.0f))); //Item
+		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 100.0f), sf::Vector2f(5400.0f, 1000.0f))); //p10
+		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 600.0f), sf::Vector2f(5800.0f, 1550.0f))); //p11
+		platforms.push_back(Platform(nullptr, sf::Vector2f(1500.0f, 1000.0f), sf::Vector2f(6800.0f, 1750.0f))); //p12
+	
+
+
+
+
 	//------------------------------------------------------Platforms------------------------------------------------------//
 
 
@@ -135,10 +177,15 @@ int main()
 		//platform2.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
 
 		stage01.setPosition(player.GetPosition());
+		stage01F.setPosition(player.GetPosition());
+		UIFrame.setPosition(player.GetPosition());
 		view.setCenter(player.GetPosition());
+
 		window.clear(sf::Color::Red);
 		window.setView(view);
 		window.draw(stage01);
+		window.draw(stage01F);
+		window.draw(UIFrame);
 		window.draw(test);
 		player.Draw(window); /////////////////////// Draw ใครอยุ่ล่างสุด จะได้อยู่หน้าสุด
 		//enemy_01.Draw(window);
@@ -147,6 +194,7 @@ int main()
 		platform.Draw(window);
 		//platform1.Draw(window);
 		//platform2.Draw(window);
+
 		window.display();
 	}
 

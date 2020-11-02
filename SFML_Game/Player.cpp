@@ -14,7 +14,8 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	body.setSize(sf::Vector2f(120.0f, 170.0f)); //235
 	//body.setScale(1.f, 1.6f);
 	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f});
-	body.setPosition(380.0f, 440.0f);// For Test System Room
+	//body.setPosition(380.0f, 440.0f);// For Test System Room
+	body.setPosition(380.0f, 1350.0f);// For Stage 01
 	body.setTexture(texture);
 
 }
@@ -55,7 +56,7 @@ void Player::Update(float deltaTime)
 		}
 		this->inAction = false;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && this->inAction == false ) // on ground
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && this->inAction == false) // on ground
 	{
 		row = 8;
 		velocity.x = deltaTime;
@@ -98,7 +99,21 @@ void Player::Update(float deltaTime)
 		row = 2;
 		velocity_jump.x = deltaTime;
 		//this->inAction = false;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+		{
+			row = 6;
+			velocity_attack.x = deltaTime;
+			velocity.x += speed;
+			this->inAction = true;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+		{
+			row = 6;
+			velocity_attack.x = deltaTime;
+			velocity.x -= speed;
+			this->inAction = true;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
 		{
 			row = 6;
 			velocity_attack.x = deltaTime;
