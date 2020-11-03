@@ -18,7 +18,8 @@ int main()
 {
 	int hitbox_E01 = 70;
 	int hitbox_platforms = 35;
-	int framplayer=0,dirplayer=1;
+	bool inslash = false;
+	bool enemy_alive = true;
 	sf::RenderWindow window(sf::VideoMode(1360, 720), "Fuuma-Prototype"); // | sf::Style::Resize
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 
@@ -30,13 +31,6 @@ int main()
 	}
 	sf::RectangleShape playerT(sf::Vector2f(200.0f, 200.0f));
 	playerT.setTexture(&playerTextures);
-
-	sf::Texture testob;
-	testob.loadFromFile("Stage/AutumnHillsTileset_9.png");
-	sf::RectangleShape test(sf::Vector2f(200.0f, 200.0f));
-	test.setTexture(&testob);
-	//test.setOrigin(sf::Vector2f(100.f, 100.f));
-	test.setPosition(0, 0);
 
 	sf::Texture stage01texture;
 	stage01texture.loadFromFile("Stage/AutumnHills_Parallax05_01_16.png");
@@ -58,47 +52,59 @@ int main()
 	UIFrame.setOrigin(-200 , 530);
 	//UIFrame.setRotation(180.f);
 
+	sf::Texture groundwood;
+	groundwood.loadFromFile("Stage/AutumnHillsTileset_9.png");
+	sf::RectangleShape R_groundwood(sf::Vector2f(200.0f, 200.0f));
+	R_groundwood.setTexture(&groundwood);
 
-	
+	sf::Texture groundgrass;
+	groundgrass.loadFromFile("Stage/AutumnHillsTileset_10.png"); 
+	sf::RectangleShape R_groundgrass(sf::Vector2f(100.0f, 100.0f));
+	R_groundgrass.setTexture(&groundgrass);
+	//test.setOrigin(sf::Vector2f(100.f, 100.f));
+
+	sf::Texture wood;
+	wood.loadFromFile("Stage/AutumnHillsTileset_12.png");
+	sf::RectangleShape R_wood(sf::Vector2f(100.0f, 100.0f));
+	R_wood.setTexture(&wood);
+	//test.setOrigin(sf::Vector2f(100.f, 100.f));
 
 	//------------------------------------------------------Texture------------------------------------------------------//
 	//sf::Vector2f spawnPoint = { 0.f, 0.f };
 
-	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 800.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
+	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 300.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
 	Enemy_01 enemy_01(&playerTextures, sf::Vector2u(4, 10), 0.1f, 250.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
-
 	//------------------------------------------------------Platforms------------------------------------------------------//
 
 	//Test System Room
 	std::vector<Platform> platforms;
-		//platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 1500.0f))); //texture,size,position
-		//platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f)));
+	std::vector<Platform> props;
+		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 600.0f))); //texture,size,position
+		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f)));
 		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
 		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
+		platforms.push_back(Platform(nullptr, sf::Vector2f(1000.0f, 200.0f), sf::Vector2f(1580.0f, 500.0f)));
 
 	//Stage 1.1
-		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 1000.0f), sf::Vector2f(480.0f, 2000.0f))); //p1
-		platforms.push_back(Platform(nullptr, sf::Vector2f(600.0f, 1000.0f), sf::Vector2f(980.0f, 2200.0f))); //p2
-		platforms.push_back(Platform(nullptr, sf::Vector2f(2000.0f, 1000.0f), sf::Vector2f(2280.0f, 2300.0f))); //p3
+		//platforms.push_back(Platform(&groundgrass, sf::Vector2f(400.0f, 1000.0f), sf::Vector2f(480.0f, 2000.0f))); //p1
+		//platforms.push_back(Platform(&groundgrass, sf::Vector2f(600.0f, 1000.0f), sf::Vector2f(980.0f, 2200.0f))); //p2
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(2000.0f, 1000.0f), sf::Vector2f(2280.0f, 2300.0f))); //p3
+		//platforms.push_back(Platform(&wood, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(1950.0f, 1550.0f))); //p4
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(1580.0f, 1250.0f))); //p5
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(2200.0f, 1200.0f))); //Item
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(2500.0f, 1200.0f))); //Item
+		//platforms.push_back(Platform(&wood, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(2800.0f, 1550.0f))); //p6
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(2500.0f, 1000.0f), sf::Vector2f(4800.0f, 2300.0f))); //p13
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(4000.0f, 1500.0f))); //Item
+		//platforms.push_back(Platform(&groundwood, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(4200.0f, 1550.0f))); //p7
+		//platforms.push_back(Platform(&groundwood, sf::Vector2f(200.0f, 700.0f), sf::Vector2f(4400.0f, 1450.0f))); //p8
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 100.0f), sf::Vector2f(4800.0f, 1000.0f))); //p9
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(5100.0f, 800.0f))); //Item
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 100.0f), sf::Vector2f(5400.0f, 1000.0f))); //p10
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 600.0f), sf::Vector2f(5800.0f, 1550.0f))); //p11
+		//platforms.push_back(Platform(nullptr, sf::Vector2f(1500.0f, 1000.0f), sf::Vector2f(6800.0f, 1750.0f))); //p12
 
-		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(1950.0f, 1550.0f))); //p4
-		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(1580.0f, 1200.0f))); //p5
-
-		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(2200.0f, 1200.0f))); //Item
-		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(2500.0f, 1200.0f))); //Item
-
-		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(2800.0f, 1550.0f))); //p6
-
-		platforms.push_back(Platform(nullptr, sf::Vector2f(2500.0f, 1000.0f), sf::Vector2f(4800.0f, 2300.0f))); //p13
-		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(4000.0f, 1500.0f))); //Item
-		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 500.0f), sf::Vector2f(4200.0f, 1550.0f))); //p7
-		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 700.0f), sf::Vector2f(4400.0f, 1450.0f))); //p8
-
-		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 100.0f), sf::Vector2f(4800.0f, 1000.0f))); //p9
-		platforms.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(5100.0f, 800.0f))); //Item
-		platforms.push_back(Platform(&testob, sf::Vector2f(400.0f, 100.0f), sf::Vector2f(5400.0f, 1000.0f))); //p10
-		platforms.push_back(Platform(&testob, sf::Vector2f(200.0f, 600.0f), sf::Vector2f(5800.0f, 1550.0f))); //p11
-		platforms.push_back(Platform(nullptr, sf::Vector2f(1500.0f, 1000.0f), sf::Vector2f(6800.0f, 1750.0f))); //p12
+		//props.push_back(Platform(nullptr, sf::Vector2f(50.0f, 100.0f), sf::Vector2f(1000.0f, 1200.0f)));
 	
 
 
@@ -136,45 +142,38 @@ int main()
 			}
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
+		{
+			inslash = true;
+		}
+		else inslash = false;
+
 		player.Update(deltaTime);
 		enemy_01.Update(deltaTime);
-
-
-
-
-
-
-
+		
 		sf::Vector2f direction;
 		for (Platform& platform : platforms)
 			if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 2.0f, hitbox_platforms))
-				player.OnCollision(direction,deltaTime);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		/*for (Platform& platform2 : platforms)
+			{
+				player.OnCollision(direction, deltaTime);
+			}
+				
+		for (Platform& platform2 : platforms)
 			if (platform2.GetCollider().CheckCollision(enemy_01.GetCollider(), direction, 1.0f, hitbox_E01))
 				enemy_01.OnCollision(direction, deltaTime);
-			if (enemy_01.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_E01))
-				player.OnCollision(direction, deltaTime);*/
-		
 
-		//platform1.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
-		//platform2.GetCollider().CheckCollision(player.GetCollider(), 1.0f);
+		if (enemy_alive)
+		{
+			if (enemy_01.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_E01))
+			{
+				enemy_01.OnCollision(direction, deltaTime);
+				if (inslash)
+				{
+					enemy_alive = false;
+				}
+			}
+		}
+			
 
 		stage01.setPosition(player.GetPosition());
 		stage01F.setPosition(player.GetPosition());
@@ -185,16 +184,19 @@ int main()
 		window.setView(view);
 		window.draw(stage01);
 		window.draw(stage01F);
-		window.draw(UIFrame);
-		window.draw(test);
+		//window.draw(R_groundwood);
+		if (enemy_alive)
+		{
+			enemy_01.Draw(window);
+		}
+		
 		player.Draw(window); /////////////////////// Draw ใครอยุ่ล่างสุด จะได้อยู่หน้าสุด
-		//enemy_01.Draw(window);
-
 		for (Platform& platform : platforms)
 		platform.Draw(window);
+
 		//platform1.Draw(window);
 		//platform2.Draw(window);
-
+		window.draw(UIFrame);
 		window.display();
 	}
 

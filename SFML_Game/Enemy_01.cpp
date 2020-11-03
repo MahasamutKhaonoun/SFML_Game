@@ -15,6 +15,7 @@ Enemy_01::Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTi
 	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f });
 	body.setPosition(550.0f, 450.0f);// 360
 	body.setTexture(texture);
+	
 }
 Enemy_01::~Enemy_01()
 {
@@ -60,24 +61,29 @@ void Enemy_01::Draw(sf::RenderWindow& window)
 
 void Enemy_01::OnCollision(sf::Vector2f direction, float deltaTime)
 {
+
 	if (direction.x < 0.0f)
 	{
 		//Collision on the left
-		velocity.x = 0.0f;
+		velocity.x = deltaTime;
+		//body.move(0.01f, 0.0f);
 	}
 	else if (direction.x > 0.0f)
 	{
 		//Collision on the right
-		velocity.x = 0.0f;
+		velocity.x = deltaTime;
+		//body.move(0.01f, 0.0f);
 	}
 	if (direction.y < 0.0f)
 	{
 		//Collision on the bottom
-		velocity.x = 0.0f;
+		velocity.x = deltaTime;
+		//body.move(0.01f, 0.0f);
 	}
 	else if (direction.y > 0.0f)
 	{
 		//Collision on the top
-		velocity.x = 0.0f;
+		velocity.x = deltaTime;
+		//body.move(0.01f, 0.0f);
 	}
 }
