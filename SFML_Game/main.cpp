@@ -16,13 +16,39 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 
 int main()
 {
-	int hitbox_E01 = 70;
+	int hitbox_E01 = 50;
 	int hitbox_platforms = 35;
 	bool inslash = false;
 	bool enemy_alive = true;
+	int Nscore = 0;
 	sf::RenderWindow window(sf::VideoMode(1360, 720), "Fuuma-Prototype"); // | sf::Style::Resize
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
-
+	sf::RectangleShape playerHPBar(sf::Vector2f(200.0f, 100.0f));
+	sf::RectangleShape playerHPBarBack(sf::Vector2f(200.0f, 100.0f));
+	//------------------------------------------------------Texts------------------------------------------------------//
+	sf::Font score;
+	if (!score.loadFromFile("Fonts/NikkyouSans-B6aV.ttf"))
+	{
+		printf("Can not load font score");
+	}
+	sf::Text Tscore;
+	Tscore.setFont(score);
+	Tscore.setString("Score =  ");
+	Tscore.setCharacterSize(24);
+	Tscore.setFillColor(sf::Color::Red);
+	//Tscore.setStyle(sf::Text::Bold);
+	Tscore.setOrigin(-200, 330);
+	//------------------------------------------------------Texts------------------------------------------------------//
+	sf::RectangleShape testP(sf::Vector2f(60.0f, 120.0f));
+	testP.setFillColor(sf::Color::Transparent);
+	testP.setOutlineThickness(3.f);
+	testP.setOutlineColor(sf::Color::Green);
+	testP.setOrigin(60.0f / 2.0f, 120.0f / 2.0f);
+	sf::RectangleShape testE(sf::Vector2f(100.0f, 200.0f));
+	testE.setFillColor(sf::Color::Transparent);
+	testE.setOutlineThickness(3.f);
+	testE.setOutlineColor(sf::Color::Red);
+	testE.setOrigin(100.0f / 2.0f, 200.0f / 2.0f);
 	//------------------------------------------------------Texture------------------------------------------------------//
 	sf::Texture playerTextures;
 	if (!playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja02.png"))
@@ -145,8 +171,19 @@ int main()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
 		{
 			inslash = true;
+			testP.setSize(sf::Vector2f(120.f, 120.f));
+			testP.setOrigin(120.0f / 2.0f, 120.0f / 2.0f);
+			if (testE.getGlobalBounds().intersects(testP.getGlobalBounds())) {
+				printf("Dead!!");
+				enemy_alive = false;
+			}
 		}
-		else inslash = false;
+		else
+		{
+			testP.setSize(sf::Vector2f(60.0f, 120.0f));
+			testP.setOrigin(60.0f / 2.0f, 120.0f / 2.0f);
+			inslash = false;
+		}
 
 		player.Update(deltaTime);
 		enemy_01.Update(deltaTime);
@@ -158,32 +195,44 @@ int main()
 				player.OnCollision(direction, deltaTime);
 			}
 				
-		for (Platform& platform2 : platforms)
-			if (platform2.GetCollider().CheckCollision(enemy_01.GetCollider(), direction, 1.0f, hitbox_E01))
-				enemy_01.OnCollision(direction, deltaTime);
+		
 
 		if (enemy_alive)
 		{
-			if (enemy_01.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_E01))
+			for (Platform& platform2 : platforms)
+				if (platform2.GetCollider().CheckCollision(enemy_01.GetCollider(), direction, 1.0f, hitbox_E01))
+					enemy_01.OnCollision(direction, deltaTime);
+			/*if (enemy_01.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f, hitbox_E01))
 			{
 				enemy_01.OnCollision(direction, deltaTime);
-				if (inslash)
+				enemy_alive = true;
+				if (inslash == true)
 				{
 					enemy_alive = false;
 				}
-			}
+			}*/
+		}
+		if (testE.getGlobalBounds().intersects(testP.getGlobalBounds())) {
+			printf("Collision!!");
+		}
+		if (testP.getGlobalBounds().intersects(testE.getGlobalBounds())) {
+			printf("!!");
 		}
 			
-
+		testP.setPosition(player.GetPosition());
+		testE.setPosition(enemy_01.GetPosition());
 		stage01.setPosition(player.GetPosition());
 		stage01F.setPosition(player.GetPosition());
 		UIFrame.setPosition(player.GetPosition());
+		Tscore.setPosition(player.GetPosition());
 		view.setCenter(player.GetPosition());
 
 		window.clear(sf::Color::Red);
 		window.setView(view);
 		window.draw(stage01);
 		window.draw(stage01F);
+		window.draw(testE);
+		window.draw(testP);
 		//window.draw(R_groundwood);
 		if (enemy_alive)
 		{
@@ -197,6 +246,8 @@ int main()
 		//platform1.Draw(window);
 		//platform2.Draw(window);
 		window.draw(UIFrame);
+		window.draw(Tscore);
+		
 		window.display();
 	}
 

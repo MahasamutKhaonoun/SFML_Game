@@ -18,6 +18,8 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	//body.setPosition(380.0f, 1350.0f);// For Stage 01
 	body.setTexture(texture);
 
+
+
 }
 
 Player::~Player()
