@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Platform.h"
 #include "Enemy_01.h"
-void textureStage();
+#include "GUI.h"
 
 static const float VIEW_HEIGHT = 1080.0f;
 
@@ -16,15 +16,19 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 
 int main()
 {
+	float HPUpdate = 200.0f;
 	int hitbox_E01 = 50;
 	int hitbox_platforms = 35;
+	float damage = 0.0f;
 	bool inslash = false;
 	bool enemy_alive = true;
+	bool indamage = false;
 	int Nscore = 0;
 	sf::RenderWindow window(sf::VideoMode(1360, 720), "Fuuma-Prototype"); // | sf::Style::Resize
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
-	sf::RectangleShape playerHPBar(sf::Vector2f(200.0f, 100.0f));
-	sf::RectangleShape playerHPBarBack(sf::Vector2f(200.0f, 100.0f));
+
+
+	
 	//------------------------------------------------------Texts------------------------------------------------------//
 	sf::Font score;
 	if (!score.loadFromFile("Fonts/NikkyouSans-B6aV.ttf"))
@@ -39,16 +43,8 @@ int main()
 	//Tscore.setStyle(sf::Text::Bold);
 	Tscore.setOrigin(-200, 330);
 	//------------------------------------------------------Texts------------------------------------------------------//
-	sf::RectangleShape testP(sf::Vector2f(60.0f, 120.0f));
-	testP.setFillColor(sf::Color::Transparent);
-	testP.setOutlineThickness(3.f);
-	testP.setOutlineColor(sf::Color::Green);
-	testP.setOrigin(60.0f / 2.0f, 120.0f / 2.0f);
-	sf::RectangleShape testE(sf::Vector2f(100.0f, 200.0f));
-	testE.setFillColor(sf::Color::Transparent);
-	testE.setOutlineThickness(3.f);
-	testE.setOutlineColor(sf::Color::Red);
-	testE.setOrigin(100.0f / 2.0f, 200.0f / 2.0f);
+	
+	
 	//------------------------------------------------------Texture------------------------------------------------------//
 	sf::Texture playerTextures;
 	if (!playerTextures.loadFromFile("Textures/PC Computer - The Messenger - Ninja02.png"))
@@ -57,6 +53,24 @@ int main()
 	}
 	sf::RectangleShape playerT(sf::Vector2f(200.0f, 200.0f));
 	playerT.setTexture(&playerTextures);
+	sf::RectangleShape testP(sf::Vector2f(60.0f, 120.0f));
+	testP.setFillColor(sf::Color::Transparent);
+	testP.setOutlineThickness(3.f);
+	testP.setOutlineColor(sf::Color::Green);
+	testP.setOrigin(60.0f / 2.0f, 120.0f / 2.0f);
+
+	sf::Texture Green_KappaTextures;
+	if (!Green_KappaTextures.loadFromFile("Textures/Enemies_Green Kappa.png"))
+	{
+		std::cout << "Load failed" << std::endl;
+	}
+	sf::RectangleShape Green_KappaT(sf::Vector2f(250.0f, 200.0f));
+	Green_KappaT.setTexture(&Green_KappaTextures);
+	sf::RectangleShape testE(sf::Vector2f(85.0f, 120.0f));
+	testE.setFillColor(sf::Color::Transparent);
+	testE.setOutlineThickness(3.f);
+	testE.setOutlineColor(sf::Color::Red);
+	testE.setOrigin(85.0f / 2.0f, 120.0f / 2.0f);
 
 	sf::Texture stage01texture;
 	stage01texture.loadFromFile("Stage/AutumnHills_Parallax05_01_16.png");
@@ -97,9 +111,11 @@ int main()
 
 	//------------------------------------------------------Texture------------------------------------------------------//
 	//sf::Vector2f spawnPoint = { 0.f, 0.f };
-
+	
 	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 300.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
-	Enemy_01 enemy_01(&playerTextures, sf::Vector2u(4, 10), 0.1f, 250.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
+	Enemy_01 enemy_01(&Green_KappaTextures, sf::Vector2u(4,1), 0.3f, 250.0f); // texture, imageCount, switchTime, speed, 
+	GUI gui(damage);
+
 	//------------------------------------------------------Platforms------------------------------------------------------//
 
 	//Test System Room
@@ -107,8 +123,8 @@ int main()
 	std::vector<Platform> props;
 		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 300.0f), sf::Vector2f(480.0f, 600.0f))); //texture,size,position
 		platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(880.0f, 500.0f)));
-		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
-		//platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
+		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(880.0f, 100.0f)));
+		platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 400.0f), sf::Vector2f(480.0f, 0.0f)));
 		platforms.push_back(Platform(nullptr, sf::Vector2f(1000.0f, 200.0f), sf::Vector2f(1580.0f, 500.0f)));
 
 	//Stage 1.1
@@ -166,6 +182,7 @@ int main()
 				
 				}
 			}
+
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
@@ -196,7 +213,7 @@ int main()
 			}
 				
 		
-
+	
 		if (enemy_alive)
 		{
 			for (Platform& platform2 : platforms)
@@ -212,13 +229,24 @@ int main()
 				}
 			}*/
 		}
-		if (testE.getGlobalBounds().intersects(testP.getGlobalBounds())) {
-			printf("Collision!!");
+		if (inslash == false)
+		{
+			if (testP.getGlobalBounds().intersects(testE.getGlobalBounds())) {
+				printf("Collision!! Player Take Damage");
+				indamage = true;
+			}else indamage = false;
 		}
-		if (testP.getGlobalBounds().intersects(testE.getGlobalBounds())) {
-			printf("!!");
+		if (indamage == true)
+		{
+			HPUpdate -= 20.0f;
+			indamage = false;
 		}
-			
+		if(HPUpdate<0)
+		{
+			HPUpdate = 20;
+		}
+
+
 		testP.setPosition(player.GetPosition());
 		testE.setPosition(enemy_01.GetPosition());
 		stage01.setPosition(player.GetPosition());
@@ -226,7 +254,6 @@ int main()
 		UIFrame.setPosition(player.GetPosition());
 		Tscore.setPosition(player.GetPosition());
 		view.setCenter(player.GetPosition());
-
 		window.clear(sf::Color::Red);
 		window.setView(view);
 		window.draw(stage01);
@@ -247,14 +274,10 @@ int main()
 		//platform2.Draw(window);
 		window.draw(UIFrame);
 		window.draw(Tscore);
-		
+		gui.Update(player.GetPosition());
+		gui.Draw(window);
 		window.display();
 	}
 
 	return 0;
-}
-
-void textureStage()
-{
-
 }
