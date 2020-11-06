@@ -113,7 +113,7 @@ int main()
 	//sf::Vector2f spawnPoint = { 0.f, 0.f };
 	
 	Player player(&playerTextures, sf::Vector2u(4, 10), 0.1f, 300.0f, 200); // texture, imageCount, switchTime, speed, jumpHeight
-	Enemy_01 enemy_01(&Green_KappaTextures, sf::Vector2u(4,1), 0.3f, 250.0f); // texture, imageCount, switchTime, speed, 
+	Enemy_01 enemy_01(&Green_KappaTextures, sf::Vector2u(4,1), 0.3f, 250.0f, sf::Vector2f(400.0f, 440.0f)); // texture, imageCount, switchTime, speed, 
 	GUI gui(damage);
 
 	//------------------------------------------------------Platforms------------------------------------------------------//

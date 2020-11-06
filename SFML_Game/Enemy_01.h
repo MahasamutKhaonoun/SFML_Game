@@ -6,7 +6,7 @@
 class Enemy_01
 {
 public:
-	Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
+	Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f pos);
 	~Enemy_01();
 	void CheckAlive(bool);
 	void Update(float deltaTime);
@@ -23,13 +23,11 @@ private:
 	unsigned int row;
 	float speed;
 	bool faceRight;
-	float delaydeltaTime;
 
 	sf::Vector2f velocity;
 	sf::Vector2f velocity_jump;
 	sf::Vector2f velocity_attack;
 	bool canJump;
-	float jumpHeight;
 
 	bool inAction;//action check
 	bool inclimb;

@@ -1,9 +1,9 @@
 #include "Enemy_01.h"
 
-Enemy_01::Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed) :
+Enemy_01::Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f pos) :
 	animation(texture, imageCount, switchTime)
 {
-	this->speed = speed;
+	this->speed = this->speed;
 	this->inAction = false;
 	this->canJump = false;
 	this->inclimb = false;
@@ -12,7 +12,7 @@ Enemy_01::Enemy_01(sf::Texture* texture, sf::Vector2u imageCount, float switchTi
 	body.setSize(sf::Vector2f(100.0f, 150.0f)); //235
 	//body.setScale(1.f, 1.6f);
 	body.setOrigin({ body.getSize().x / 2.0f,body.getSize().y / 2.0f });
-	body.setPosition(550.0f, 450.0f);// 360
+	body.setPosition(pos);// 360
 	body.setTexture(texture);
 }
 Enemy_01::~Enemy_01()
@@ -20,11 +20,13 @@ Enemy_01::~Enemy_01()
 
 }
 
+void Enemy_01::CheckAlive(bool)
+{
+}
+
 
 void Enemy_01::Update(float deltaTime)
 {
-	this->delaydeltaTime = deltaTime;
-	delaydeltaTime = 10.0f;
 	velocity.x *= 0.0f;
 	velocity_jump.x *= 0.0f;
 	velocity_attack *= 0.0f;
