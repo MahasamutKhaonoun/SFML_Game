@@ -5,6 +5,8 @@
 #include "Platform.h"
 #include "Enemy_01.h"
 #include "GUI.h"
+#include <string.h>
+#include <sstream>
 
 static const float VIEW_HEIGHT = 1080.0f;
 
@@ -24,24 +26,14 @@ int main()
 	bool enemy_alive = true;
 	bool indamage = false;
 	int Nscore = 0;
+	bool checkscore = false;
 	sf::RenderWindow window(sf::VideoMode(1360, 720), "Fuuma-Prototype"); // | sf::Style::Resize
 	sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 
 
 	
 	//------------------------------------------------------Texts------------------------------------------------------//
-	sf::Font score;
-	if (!score.loadFromFile("Fonts/NikkyouSans-B6aV.ttf"))
-	{
-		printf("Can not load font score");
-	}
-	sf::Text Tscore;
-	Tscore.setFont(score);
-	Tscore.setString("Score =  ");
-	Tscore.setCharacterSize(24);
-	Tscore.setFillColor(sf::Color::Red);
-	//Tscore.setStyle(sf::Text::Bold);
-	Tscore.setOrigin(-200, 330);
+	
 	//------------------------------------------------------Texts------------------------------------------------------//
 	
 	
@@ -193,6 +185,8 @@ int main()
 			if (testE.getGlobalBounds().intersects(testP.getGlobalBounds())) {
 				printf("Dead!!");
 				enemy_alive = false;
+				checkscore = true;
+				testE.scale(0, 0);
 			}
 		}
 		else
@@ -201,7 +195,11 @@ int main()
 			testP.setOrigin(60.0f / 2.0f, 120.0f / 2.0f);
 			inslash = false;
 		}
-
+		if (checkscore == true)
+		{
+			Nscore += 20;
+			checkscore = false;
+		}
 		player.Update(deltaTime);
 		enemy_01.Update(deltaTime);
 		
@@ -246,6 +244,20 @@ int main()
 			HPUpdate = 20;
 		}
 
+		sf::Font score;
+		if (!score.loadFromFile("Fonts/NikkyouSans-B6aV.ttf"))
+		{
+			printf("Can not load font score");
+		}
+		std::stringstream ss;
+		ss << "Score = " << Nscore;
+		sf::Text Tscore;
+		Tscore.setFont(score);
+		Tscore.setCharacterSize(24);
+		Tscore.setFillColor(sf::Color::Red);
+		Tscore.setString(ss.str());
+		//Tscore.setStyle(sf::Text::Bold);
+		Tscore.setOrigin(-200, 330);
 
 		testP.setPosition(player.GetPosition());
 		testE.setPosition(enemy_01.GetPosition());
@@ -269,6 +281,8 @@ int main()
 		player.Draw(window); /////////////////////// Draw ใครอยุ่ล่างสุด จะได้อยู่หน้าสุด
 		for (Platform& platform : platforms)
 		platform.Draw(window);
+
+
 
 		//platform1.Draw(window);
 		//platform2.Draw(window);

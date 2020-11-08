@@ -26,7 +26,7 @@ void GUI::Update(sf::Vector2f x)
 	this->playerHpBar.setFillColor(sf::Color::Red);
 	this->playerHpBar.setOrigin(500, 500);
 	this->playerHpBar.setPosition(x);
-
+	
 	this->playerHpBarBack = this->playerHpBar;
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
 	this->playerHpBarBack.setOrigin(500, 500);
