@@ -185,8 +185,8 @@ int main()
 			if (testE.getGlobalBounds().intersects(testP.getGlobalBounds())) {
 				printf("Dead!!");
 				enemy_alive = false;
-				checkscore = true;
 				testE.scale(0, 0);
+				gui.updateScore(true, 500); // checkscore, score
 			}
 		}
 		else
@@ -194,11 +194,6 @@ int main()
 			testP.setSize(sf::Vector2f(60.0f, 120.0f));
 			testP.setOrigin(60.0f / 2.0f, 120.0f / 2.0f);
 			inslash = false;
-		}
-		if (checkscore == true)
-		{
-			Nscore += 20;
-			checkscore = false;
 		}
 		player.Update(deltaTime);
 		enemy_01.Update(deltaTime);
@@ -231,40 +226,18 @@ int main()
 		{
 			if (testP.getGlobalBounds().intersects(testE.getGlobalBounds())) {
 				printf("Collision!! Player Take Damage");
-				indamage = true;
+				gui.updateHP(true, 20);
 			}else indamage = false;
 		}
-		if (indamage == true)
-		{
-			HPUpdate -= 20.0f;
-			indamage = false;
-		}
-		if(HPUpdate<0)
-		{
-			HPUpdate = 20;
-		}
 
-		sf::Font score;
-		if (!score.loadFromFile("Fonts/NikkyouSans-B6aV.ttf"))
-		{
-			printf("Can not load font score");
-		}
-		std::stringstream ss;
-		ss << "Score = " << Nscore;
-		sf::Text Tscore;
-		Tscore.setFont(score);
-		Tscore.setCharacterSize(24);
-		Tscore.setFillColor(sf::Color::Red);
-		Tscore.setString(ss.str());
-		//Tscore.setStyle(sf::Text::Bold);
-		Tscore.setOrigin(-200, 330);
+
+		
 
 		testP.setPosition(player.GetPosition());
 		testE.setPosition(enemy_01.GetPosition());
 		stage01.setPosition(player.GetPosition());
 		stage01F.setPosition(player.GetPosition());
 		UIFrame.setPosition(player.GetPosition());
-		Tscore.setPosition(player.GetPosition());
 		view.setCenter(player.GetPosition());
 		window.clear(sf::Color::Red);
 		window.setView(view);
@@ -287,7 +260,6 @@ int main()
 		//platform1.Draw(window);
 		//platform2.Draw(window);
 		window.draw(UIFrame);
-		window.draw(Tscore);
 		gui.Update(player.GetPosition());
 		gui.Draw(window);
 		window.display();
